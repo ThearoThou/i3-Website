@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shoes</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="category-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  
+    <header>
+    <nav>
+        <div class="logo">
+            <i class="fas fa-recycle" aria-hidden="true"></i>
+            <span>VintageCycle</span>
+        </div>
+        
+        <button class="mobile-menu-btn" aria-expanded="false" aria-label="Toggle menu">
+            <i class="fas fa-bars"></i>
+        </button>
+        
+        <ul class="nav-links">
+            <li><a href="Homepage.html">Home</a></li>
+            <li><a href="Clothing.html">Clothing</a></li>
+            <li><a href="#" class="active" aria-current="page">Shoes</a></li>
+            <li><a href="Accessories.html">Accessories</a></li>
+            <li><a href="About.html">About</a></li>
+        </ul>
+        
+        <div class="nav-icons">
+            <button class="nav-btn" aria-label="Search"><i class="fas fa-search"></i></button>
+            <div class="cart-icon">
+                <button class="nav-btn" aria-label="Cart"><i class="fas fa-shopping-bag"></i></button>
+                <span class="cart-count">0</span>
+            </div>
+        </div>
+    </nav>
+    </header>
+    
+    <!-- Category Header -->
+    <section class="category-header shoes-header">
+        <div class="category-title">
+            <h1>Unique Collections</h1>
+            <p>Step back in time with classic footwear</p>
+        </div>
+    </section>
+
+    <!-- Product Grid -->
+    <section class="product-grid">
+        <!-- Product Card 1 -->
+        <div class="product-card">
+            <div class="product-badge vintage-badge">Classic</div>
+            <a href="product-detail.html?product=nike-panda-dunk-low">
+            <div class="product-image">
+                <img src="images/pandadunk-removebg-preview.png" alt="Nike Panda Dunk Low">
+            </div>
+            </a>
+            <div class="product-info">
+                <a href="product-detail.html?product=nike-panda-dunk-low">
+                <h3>Nike Panda Dunk Low</h3>
+                </a>
+                <div class="price-condition">
+                    <span class="price">$19.99</span>
+                    <span class="condition">Very Good</span>
+                </div>
+                <div class="product-specs">
+                    <span>Size: 36-44</span>
+                    <span>Color: Black/White</span>
+                </div>
+                <div class="product-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Card 2 -->
+        <div class="product-card">
+            <div class="product-badge rare-badge">Rare</div>
+            <a href="product-detail.html?product=air-jordan-1-travis-scott">
+            <div class="product-image">
+                <img src="images/air-jordan-1-high-travis-scott-release-date.png" alt="Air Jordan 1 High x Travis Scott">
+            </div>
+            </a>
+            <div class="product-info">
+                <a href="product-detail.html?product=air-jordan-1-travis-scott">
+                <h3>Air Jordan 1 High x Travis Scott</h3>
+                </a>
+                <div class="price-condition">
+                    <span class="price">$29.99</span>
+                    <span class="condition">Like New</span>
+                </div>
+                <div class="product-specs">
+                    <span>Size: 36-44</span>
+                    <span>Color: Brown/White</span>
+                </div>
+                <div class="product-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Card 3 -->
+        <div class="product-card">
+            <div class="product-badge vintage-badge">Classic</div>
+            <a href="product-detail.html?product=nike-dunk-low-olive">
+            <div class="product-image">
+                <img src="images/nikedunklowolive-removebg-preview.png" alt="Nike Dunk Low Olive">
+            </div>
+            </a>
+            <div class="product-info">
+                <a href="product-detail.html?product=nike-dunk-low-olive">
+                <h3>Nike Dunk Low</h3>
+                </a>
+                <div class="price-condition">
+                    <span class="price">$24.99</span>
+                    <span class="condition">Excellent</span>
+                </div>
+                <div class="product-specs">
+                    <span>Size: 36-44</span>
+                    <span>Color: Olive</span>
+                </div>
+                <div class="product-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Card 4 -->
+        <div class="product-card">
+            <div class="product-badge vintage-badge">Classic</div>
+            <a href="product-detail.html?product=nike-air-force-1">
+            <div class="product-image">
+                <img src="images/airfoce1-removebg-preview.png" alt="Nike Air Force 1">
+            </div>
+            </a>
+            <div class="product-info">
+                <a href="product-detail.html?product=nike-air-force-1">
+                <h3>Nike Air Force 1</h3>
+                </a>
+                <div class="price-condition">
+                    <span class="price">$19.99</span>
+                    <span class="condition">New</span>
+                </div>
+                <div class="product-specs">
+                    <span>Size: 36-44</span>
+                    <span>Color: White</span>
+                </div>
+                <div class="product-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Card 5 -->
+        <div class="product-card">
+            <div class="product-badge">Running</div>
+            <a href="product-detail.html?product=adidas-ultraboost-light">
+            <div class="product-image">
+                <img src="images/ultraboostlight.png" alt="Adidas Ultraboost Light">
+            </div>
+            </a>
+            <div class="product-info">
+                <a href="product-detail.html?product=adidas-ultraboost-light">
+                <h3>Adidas Ultraboost Light</h3>
+                </a>
+                <div class="price-condition">
+                    <span class="price">$24.99</span>
+                    <span class="condition">New</span>
+                </div>
+                <div class="product-specs">
+                    <span>Size: 36-44</span>
+                    <span>Color: White</span>
+                </div>
+                <div class="product-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Card 6 -->
+        <div class="product-card">
+            <div class="product-badge sale-badge">15% Off</div>
+            <a href="product-detail.html?product=adidas-ultrarun-5">
+            <div class="product-image">
+                <img src="images/Ultrarun_5_Running_Shoes_White_IE8791_01_standard.png" alt="Adidas Ultrarun 5">
+            </div>
+            </a>
+            <div class="product-info">
+                <a href="product-detail.html?product=adidas-ultrarun-5">
+                <h3>Adidas Ultrarun 5</h3>
+                </a>
+                <div class="price-condition">
+                    <span class="original-price">$29.99</span>
+                    <span class="price">$25.49</span>
+                    <span class="condition">New</span>
+                </div>
+                <div class="product-specs">
+                    <span>Size: 36-44</span>
+                    <span>Color: Mixed color</span>
+                </div>
+                <div class="product-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Card 7 -->
+        <div class="product-card">
+            <div class="product-badge rare-badge">Rare</div>
+            <a href="product-detail.html?product=air-jordan-1-black-phantom">
+            <div class="product-image">
+                <img src="images/blackphantom.png" alt="Air Jordan 1 Low x Travis Scott Black Phantom">
+            </div>
+            </a>
+            <div class="product-info">
+                <a href="product-detail.html?product=air-jordan-1-black-phantom">
+                <h3>Air Jordan 1 Low x Travis Scott Black Phantom</h3>
+                </a>
+                <div class="price-condition">
+                    <span class="price">$29.99</span>
+                    <span class="condition">Like New</span>
+                </div>
+                <div class="product-specs">
+                    <span>Size: 36-44</span>
+                    <span>Color: Black</span>
+                </div>
+                <div class="product-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Card 8 -->
+        <div class="product-card">
+            <div class="product-badge vintage-badge">Classic</div>
+            <a href="product-detail.html?product=new-balance-530-grey">
+            <div class="product-image">
+                <img src="images/newbalance530grey.png" alt="New Balance 530">
+            </div>
+            </a>
+            <div class="product-info">
+                <a href="product-detail.html?product=new-balance-530-grey">
+                <h3>New Balance 530</h3>
+                </a>
+                <div class="price-condition">
+                    <span class="price">$24.99</span>
+                    <span class="condition">New</span>
+                </div>
+                <div class="product-specs">
+                    <span>Size: 36-44</span>
+                    <span>Color: Grey</span>
+                </div>
+                <div class="product-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Card 9 -->
+        <div class="product-card">
+            <div class="product-badge">Running</div>
+            <a href="product-detail.html?product=adidas-runfalcon-5">
+            <div class="product-image">
+                <img src="images/Runfalcon_5_Running_Shoes_Black_IE8826_01_standard.png" alt="Adidas Runfalcon 5">
+            </div>
+            </a>
+            <div class="product-info">
+                <a href="product-detail.html?product=adidas-runfalcon-5">
+                <h3>Adidas Runfalcon 5</h3>
+                </a>
+                <div class="price-condition">
+                    <span class="price">$24.99</span>
+                    <span class="condition">New</span>
+                </div>
+                <div class="product-specs">
+                    <span>Size: 36-44</span>
+                    <span>Color: Mixed color</span>
+                </div>
+                <div class="product-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Card 10 -->
+        <div class="product-card">
+            <div class="product-badge rare-badge">Rare</div>
+            <a href="product-detail.html?product=air-jordan-reverse-mocha">
+            <div class="product-image">
+                <img src="images/reversemocha.png" alt="Air Jordan Reverse Mocha">
+            </div>
+            </a>
+            <div class="product-info">
+                <a href="product-detail.html?product=air-jordan-reverse-mocha">
+                <h3>Air Jordan Reverse Mocha</h3>
+                </a>
+                <div class="price-condition">
+                    <span class="price">$29.99</span>
+                    <span class="condition">Like New</span>
+                </div>
+                <div class="product-specs">
+                    <span>Size: 36-44</span>
+                    <span>Color: Brown</span>
+                </div>
+                <div class="product-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Card 11 -->
+        <div class="product-card">
+             <div class="product-badge sale-badge">25% Off</div>
+             <a href="product-detail.html?product=new-balance-550-green">
+            <div class="product-image">
+                <img src="images/newbalance550green.png" alt="New Balance 550 Green">
+            </div>
+            </a>
+            <div class="product-info">
+                <a href="product-detail.html?product=new-balance-550-green">
+                <h3>New Balance 550 Green</h3>
+                </a>
+                <div class="price-condition">
+                    <span class="original-price">$24.99</span>
+                    <span class="price">$18.75</span>
+                    <span class="condition">Very Good</span>
+                </div>
+                <div class="product-specs">
+                    <span>Size: 36-44</span>
+                    <span>Color: Green</span>
+                </div>
+                <div class="product-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Card 12 -->
+        <div class="product-card">
+            <div class="product-badge vintage-badge">Classic</div>
+            <a href="product-detail.html?product=new-balance-530-white">
+            <div class="product-image">
+                <img src="images/newbalance530white.png" alt="New Balance White Silver Navy">
+            </div>
+            </a>
+            <div class="product-info">
+                <a href="product-detail.html?product=new-balance-530-white">
+                <h3>New Balance White Silver Navy</h3>
+                </a>
+                <div class="price-condition">
+                    <span class="price">$24.99</span>
+                    <span class="condition">New</span>
+                </div>
+                <div class="product-specs">
+                    <span>Size: 36-44</span>
+                    <span>Color: White</span>
+                </div>
+                <div class="product-actions">
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+       <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Shop</h4>
+                <ul>
+                    <li><a href="Clothing.html">Clothing</a></li>
+                    <li><a href="Shoes.html">Shoes</a></li>
+                    <li><a href="Accessories.html">Accessories</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Help</h4>
+                <ul>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Shipping & Pickup</a></li>
+                    <li><a href="#">Returns</a></li>
+                    <li><a href="#">Size Guide</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>About</h4>
+                <ul>
+                    <li><a href="About.html">Our Story</a></li>
+                    <li><a href="About.html">Visit Our Shop</a></li>
+                    <li><a href="About.html">Blog</a></li>
+                    <li><a href="About.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section social">
+                <h4>Follow Us</h4>
+                <div class="social-icons">
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                </div>
+                <div class="store-info">
+                    <br>
+                    <p><i class="fas fa-map-marker-alt"></i> Fun Mall TK, 1st Floor, Phnom Penh</p>
+                    <p><i class="fas fa-phone"></i> (+855) 17768891</p>
+                    <p><i class="fas fa-clock"></i> Mon-Sun: 9am-7pm</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 VintageCycle. A proud local small business.</p>
+        </div>
+    </footer>
+    <script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="category-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+   
+    <header>
+    <nav>
+        <div class="logo">
+            <i class="fas fa-recycle" aria-hidden="true"></i>
+            <span>VintageCycle</span>
+        </div>
+        
+        <button class="mobile-menu-btn" aria-expanded="false" aria-label="Toggle menu">
+            <i class="fas fa-bars"></i>
+        </button>
+        
+        <ul class="nav-links">
+            <li><a href="Homepage.html">Home</a></li>
+            <li><a href="Clothing.html">Clothing</a></li>
+            <li><a href="Shoes.html">Shoes</a></li>
+            <li><a href="Accessories.html">Accessories</a></li>
+            <li><a href="About.html">About</a></li>
+        </ul>
+        
+        <div class="nav-icons">
+            <button class="nav-btn" aria-label="Search"><i class="fas fa-search"></i></button>
+            <div class="cart-icon">
+                <button class="nav-btn" aria-label="Cart"><i class="fas fa-shopping-bag"></i></button>
+                <span class="cart-count">0</span>
+            </div>
+        </div>
+    </nav>
+    </header>
+
+    <main class="cart-page">
+        <div class="cart-header">
+            <h1>Your Shopping Cart</h1>
+        </div>
+        
+        <div class="cart-content">
+            <div class="cart-items">
+                <div class="cart-empty">
+                    <i class="fas fa-shopping-bag"></i>
+                    <h2>Your cart is empty</h2>
+                    <p>Looks like you haven't added anything to your cart yet</p>
+                    <a href="Clothing.html" class="btn">Continue Shopping</a>
+                </div>
+            </div>
+            
+            <div class="cart-summary">
+                <h2>Order Summary</h2>
+                
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span class="cart-subtotal">$0.00</span>
+                </div>
+                
+                <div class="summary-row">
+                    <span>Shipping</span>
+                    <span>Free</span>
+                </div>
+                
+                <div class="summary-row">
+                    <span>Tax</span>
+                    <span>Calculated at checkout</span>
+                </div>
+                
+                <div class="summary-row summary-total">
+                    <span>Total</span>
+                    <span class="cart-total">$0.00</span>
+                </div>
+                
+                <button class="checkout-btn">Proceed to Checkout</button>
+                <a href="Clothing.html" class="continue-shopping">Continue Shopping</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Shop</h4>
+                <ul>
+                    <li><a href="Clothing.html">Clothing</a></li>
+                    <li><a href="Shoes.html">Shoes</a></li>
+                    <li><a href="Accessories.html">Accessories</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Help</h4>
+                <ul>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Shipping & Pickup</a></li>
+                    <li><a href="#">Returns</a></li>
+                    <li><a href="#">Size Guide</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>About</h4>
+                <ul>
+                    <li><a href="About.html">Our Story</a></li>
+                    <li><a href="About.html">Visit Our Shop</a></li>
+                    <li><a href="About.html">Blog</a></li>
+                    <li><a href="About.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section social">
+                <h4>Follow Us</h4>
+                <div class="social-icons">
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                </div>
+                <div class="store-info">
+                    <br>
+                    <p><i class="fas fa-map-marker-alt"></i> Fun Mall TK, 1st Floor, Phnom Penh</p>
+                    <p><i class="fas fa-phone"></i> (+855) 17768891</p>
+                    <p><i class="fas fa-clock"></i> Mon-Sun: 9am-7pm</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 VintageCycle. A proud local small business.</p>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>
