@@ -14,55 +14,56 @@ const CartManager = {
     });
   },
 
-  addToCart(product) {
+ addToCart(product) {
     let quantity = parseInt(product.quantity);
     if (isNaN(quantity) || quantity < 1) quantity = 1;
+    
     const existingItem = cart.find(item =>
-      item.id === product.id &&
-      (!product.size || item.size === product.size) &&
-      (!product.color || item.color === product.color)
+        item.id === product.id &&
+        item.size === product.size && 
+        item.color === product.color
     );
 
     if (existingItem) {
-      const newTotal = existingItem.quantity + quantity;
-      existingItem.quantity = newTotal;
+        const newTotal = existingItem.quantity + quantity;
+        existingItem.quantity = newTotal;
     } else {
-      cart.push({
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        image: product.image || 'default-product.png',
-        size: product.size,
-        color: product.color,
-        condition: product.condition,
-        quantity: quantity
-      });
+        cart.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            image: product.image || 'default-product.png',
+            size: product.size,
+            color: product.color,
+            condition: product.condition,
+            quantity: quantity
+        });
     }
 
     this.saveCart();
     this.updateCartCount();
     this.showCartFeedback(`${product.name} added to cart! (${quantity})`);
-  },
+},
 
-  removeFromCart(productId) {
-    cart = cart.filter(item => item.id !== productId);
+ removeFromCart(productId, size) {
+    cart = cart.filter(item => !(item.id === productId && item.size === size));
     this.saveCart();
     this.updateCartCount();
     if (document.querySelector('.cart-page')) this.renderCart();
-  },
+},
 
-  updateCartItemQuantity(productId, newQuantity) {
-    const item = cart.find(item => item.id === productId);
+ updateCartItemQuantity(productId, size, newQuantity) {
+    const item = cart.find(item => item.id === productId && item.size === size);
     if (item) {
-      item.quantity = newQuantity;
-      if (item.quantity <= 0) {
-        this.removeFromCart(productId);
-      } else {
-        this.saveCart();
-        this.renderCart();
-      }
+        item.quantity = newQuantity;
+        if (item.quantity <= 0) {
+            this.removeFromCart(productId, size);
+        } else {
+            this.saveCart();
+            this.renderCart();
+        }
     }
-  },
+},
 
   showCartFeedback(message) {
     const existingFeedback = document.querySelector('.cart-feedback');
@@ -107,54 +108,59 @@ const CartManager = {
     if (cartEmpty) cartEmpty.style.display = 'none';
     
     let subtotal = 0;
-    cartItemsContainer.innerHTML = cart.map(item => {
-      const price = parseFloat(item.price.replace(/[^0-9.-]+/g,""));
-      const itemTotal = price * item.quantity;
-      subtotal += itemTotal;
-      
-      return `
-        <div class="cart-item">
-          <img src="images/${item.image}" alt="${item.name}">
-          <div class="item-details">
-            <h3>${item.name}</h3>
-            <p>${item.price}</p>
-            ${item.size ? `<p>Size: ${item.size}</p>` : ''}
-            ${item.color ? `<p>Color: ${item.color}</p>` : ''}
-            ${item.condition ? `<p>Condition: ${item.condition}</p>` : ''}
-            <div class="quantity-selector">
-              <button class="quantity-btn minus" data-id="${item.id}">-</button>
-              <span class="quantity">${item.quantity}</span>
-              <button class="quantity-btn plus" data-id="${item.id}">+</button>
+      cartItemsContainer.innerHTML = cart.map(item => {
+        const price = parseFloat(item.price.replace(/[^0-9.-]+/g,""));
+        const itemTotal = price * item.quantity;
+        subtotal += itemTotal;
+        
+        return `
+            <div class="cart-item">
+                <img src="images/${item.image}" alt="${item.name}">
+                <div class="item-details">
+                    <h3>${item.name}</h3>
+                    <p>${item.price}</p>
+                    ${item.size ? `<p>Size: ${item.size}</p>` : ''}
+                    ${item.color ? `<p>Color: ${item.color}</p>` : ''}
+                    ${item.condition ? `<p>Condition: ${item.condition}</p>` : ''}
+                    <div class="quantity-selector">
+                        <button class="quantity-btn minus" data-id="${item.id}">-</button>
+                        <span class="quantity">${item.quantity}</span>
+                        <button class="quantity-btn plus" data-id="${item.id}">+</button>
+                    </div>
+                    <button class="remove-item" data-id="${item.id}">Remove</button>
+                </div>
             </div>
-            <button class="remove-item" data-id="${item.id}">Remove</button>
-          </div>
-        </div>
-      `;
+        `;
     }).join('');
     
     if (cartSubtotal) cartSubtotal.textContent = `$${subtotal.toFixed(2)}`;
     if (cartTotal) cartTotal.textContent = `$${subtotal.toFixed(2)}`;
     
     // Add event listeners for cart interactions
-    document.querySelectorAll('.quantity-btn.minus').forEach(btn => {
-      btn.addEventListener('click', () => {
+   document.querySelectorAll('.quantity-btn.minus').forEach(btn => {
+    btn.addEventListener('click', () => {
         const id = btn.dataset.id;
         const item = cart.find(item => item.id === id);
-        if (item) CartManager.updateCartItemQuantity(id, item.quantity - 1);
-      });
+        if (item) CartManager.updateCartItemQuantity(id, item.size, item.quantity - 1);
     });
-    
-    document.querySelectorAll('.quantity-btn.plus').forEach(btn => {
-      btn.addEventListener('click', () => {
+});
+
+document.querySelectorAll('.quantity-btn.plus').forEach(btn => {
+    btn.addEventListener('click', () => {
         const id = btn.dataset.id;
         const item = cart.find(item => item.id === id);
-        if (item) CartManager.updateCartItemQuantity(id, item.quantity + 1);
-      });
+        if (item) CartManager.updateCartItemQuantity(id, item.size, item.quantity + 1);
     });
+});
     
     document.querySelectorAll('.remove-item').forEach(btn => {
-      btn.addEventListener('click', () => CartManager.removeFromCart(btn.dataset.id));
+    btn.addEventListener('click', () => {
+        const item = cart.find(item => item.id === btn.dataset.id);
+        if (item) {
+            CartManager.removeFromCart(btn.dataset.id, item.size);
+        }
     });
+});
   }
 };
 
@@ -293,8 +299,6 @@ const ProductDetail = {
         description: 'Vintage Manchester United home jersey from the 1993-94 season. Classic red with white details, featuring the iconic Sharp sponsor.',
         images: [
           'images/manujersy-removebg-preview.png',
-          'images/manujersy-back.png',
-          'images/manujersy-detail.png'
         ],
         sizes: ['S', 'M', 'L', 'XL'],
         colors: ['Red'],
@@ -308,8 +312,6 @@ const ProductDetail = {
         description: 'Rare Real Madrid away jersey from the 2006-07 season. Black with white details, featuring the Siemens sponsor.',
         images: [
           'images/Real-Madrid-Away-2006-07-Retro-Jersey--removebg-preview.png',
-          'images/realmadrid-back.png',
-          'images/realmadrid-detail.png'
         ],
         sizes: ['S', 'M', 'L', 'XL'],
         colors: ['Black'],
@@ -323,8 +325,6 @@ const ProductDetail = {
         description: 'Real Madrid away jersey from the 2007-08 season. Purple with gold details, featuring the Bwin sponsor.',
         images: [
           'images/realjersy-removebg-preview.png',
-          'images/realmadrid08-back.png',
-          'images/realmadrid08-detail.png'
         ],
         sizes: ['S', 'M', 'L', 'XL'],
         colors: ['Purple'],
@@ -338,8 +338,6 @@ const ProductDetail = {
         description: 'Barcelona Home 2008-09 UCL Final Jersey. Blue with red details, featuring the Unicef sponsor.',
         images: [
           'images/Barca08-09-removebg-preview.png',
-          'images/realmadrid08-back.png',
-          'images/realmadrid08-detail.png'
         ],
         sizes: ['S', 'M', 'L', 'XL'],
         colors: ['Blue', 'Red'],
@@ -353,9 +351,6 @@ const ProductDetail = {
         description: 'Celebrate FC Barcelona\'s rich history with this special 125th anniversary jersey. Vintage-inspired design with gold accents.',
         images: [
           'images/barca125-removebg-preview.png',
-          'images/barca125-back.png',
-          'images/barca125-detail.png',
-          'images/barca125-tag.png'
         ],
         sizes: ['S', 'M', 'L', 'XL'],
         colors: ['Blue', 'Maroon'],
@@ -369,11 +364,9 @@ const ProductDetail = {
         description: 'AC Milan home jersey from their Champions League winning 2006-07 season. Classic red and black stripes with Opel sponsor.',
         images: [
           'images/acmilan0607.png',
-          'images/acmilan-back.png',
-          'images/acmilan-detail.png'
         ],
         sizes: ['S', 'M', 'L', 'XL'],
-        colors: ['Red'],
+        colors: ['Red', 'Black'],
         material: '100% Polyester',
         year: '2006-07'
       },
@@ -384,8 +377,6 @@ const ProductDetail = {
         description: 'AC Milan away jersey from the 2006-07 season. White with red and black details, featuring the Opel sponsor.',
         images: [
           'images/acmilan0607away-removebg-preview (1).png',
-          'images/acmilanaway-back.png',
-          'images/acmilanaway-detail.png'
         ],
         sizes: ['S', 'M', 'L', 'XL'],
         colors: ['White'],
@@ -399,11 +390,9 @@ const ProductDetail = {
         description: 'Classic Inter Milan home jersey from the 1997-98 season. Blue and black stripes with Pirelli sponsor.',
         images: [
           'images/inter9798-removebg-preview.png',
-          'images/inter-back.png',
-          'images/inter-detail.png'
         ],
         sizes: ['S', 'M', 'L', 'XL'],
-        colors: ['Blue'],
+        colors: ['Blue', 'Black'],
         material: '100% Polyester',
         year: '1997-98'
       },
@@ -414,8 +403,6 @@ const ProductDetail = {
         description: 'Manchester United home long sleeve jersey from the 2002-03 season. Red with white details, featuring the Vodafone sponsor.',
         images: [
           'images/manu0203.png',
-          'images/manu0203-back.png',
-          'images/manu0203-detail.png'
         ],
         sizes: ['S', 'M', 'L', 'XL'],
         colors: ['Red'],
@@ -429,8 +416,6 @@ const ProductDetail = {
         description: 'Manchester United home jersey from the 2011-12 season. Red with white and black details, featuring the Aon sponsor.',
         images: [
           'images/manu1112-removebg-preview.png',
-          'images/manu1112-back.png',
-          'images/manu1112-detail.png'
         ],
         sizes: ['S', 'M', 'L', 'XL'],
         colors: ['Red'],
@@ -444,8 +429,6 @@ const ProductDetail = {
         description: 'Vintage Liverpool home jersey from the 1996-97 season. Red with white details, featuring the Carlsberg sponsor.',
         images: [
           'images/liverpool-1996-1997-retro-jersey-scaled-removebg-preview.png',
-          'images/liverpool-back.png',
-          'images/liverpool-detail.png'
         ],
         sizes: ['S', 'M', 'L', 'XL'],
         colors: ['Red'],
@@ -459,11 +442,9 @@ const ProductDetail = {
         description: 'Rare Liverpool away jersey from the 1993-95 seasons. White with green details, featuring the Carlsberg sponsor.',
         images: [
           'images/liverpool9395away-removebg-preview.png',
-          'images/liverpoolaway-back.png',
-          'images/liverpoolaway-detail.png'
         ],
         sizes: ['S', 'M', 'L', 'XL'],
-        colors: ['White'],
+        colors: ['White', 'Green'],
         material: '100% Polyester',
         year: '1993-95'
       },
@@ -476,11 +457,9 @@ const ProductDetail = {
         description: 'Classic Nike Panda Dunk Low shoes in black and white colorway. Timeless design that pairs with any outfit.',
         images: [
           'images/pandadunk-removebg-preview.png',
-          'images/pandadunk-side.png',
-          'images/pandadunk-bottom.png'
         ],
         sizes: ['36', '37', '38', '39', '40', '41', '42', '43', '44'],
-        colors: ['#000000', '#FFFFFF'],
+        colors: ['Black', 'White'],
         material: 'Leather and rubber',
         year: '2023'
       },
@@ -491,11 +470,9 @@ const ProductDetail = {
         description: 'Highly sought-after Travis Scott collaboration. Brown suede with white leather and signature reverse swoosh.',
         images: [
           'images/air-jordan-1-high-travis-scott-release-date.png',
-          'images/travis-side.png',
-          'images/travis-bottom.png'
         ],
         sizes: ['36', '37', '38', '39', '40', '41', '42', '43', '44'],
-        colors: ['#8B5A3C', '#FFFFFF'],
+        colors: ['Brown', 'White'],
         material: 'Suede and leather',
         year: '2019'
       },
@@ -506,11 +483,9 @@ const ProductDetail = {
         description: 'Nike Dunk Low in olive green and white colorway. Premium materials and classic silhouette.',
         images: [
           'images/nikedunklowolive-removebg-preview.png',
-          'images/dunkolive-side.png',
-          'images/dunkolive-bottom.png'
         ],
         sizes: ['36', '37', '38', '39', '40', '41', '42', '43', '44'],
-        colors: ['#6B8E23', '#FFFFFF'],
+        colors: ['Olive', 'White'],
         material: 'Leather and rubber',
         year: '2022'
       },
@@ -521,11 +496,9 @@ const ProductDetail = {
         description: 'Classic white Nike Air Force 1 sneakers. The most iconic basketball shoe turned streetwear staple.',
         images: [
           'images/airfoce1-removebg-preview.png',
-          'images/af1-side.png',
-          'images/af1-bottom.png'
         ],
         sizes: ['36', '37', '38', '39', '40', '41', '42', '43', '44'],
-        colors: ['#FFFFFF'],
+        colors: ['White'],
         material: 'Leather and rubber',
         year: '2023'
       },
@@ -536,11 +509,9 @@ const ProductDetail = {
         description: 'Adidas Ultraboost Light running shoes with responsive cushioning. Perfect for both running and casual wear.',
         images: [
           'images/ultraboostlight.png',
-          'images/ultraboost-side.png',
-          'images/ultraboost-bottom.png'
         ],
         sizes: ['36', '37', '38', '39', '40', '41', '42', '43', '44'],
-        colors: ['#FFFFFF'],
+        colors: ['White'],
         material: 'Primeknit and Boost foam',
         year: '2023'
       },
@@ -551,11 +522,9 @@ const ProductDetail = {
         description: 'Adidas Ultrarun 5 running shoes with lightweight cushioning. Breathable mesh upper for all-day comfort.',
         images: [
           'images/Ultrarun_5_Running_Shoes_White_IE8791_01_standard.png',
-          'images/ultrarun-side.png',
-          'images/ultrarun-bottom.png'
         ],
         sizes: ['36', '37', '38', '39', '40', '41', '42', '43', '44'],
-        colors: ['#FFFFFF', '#000000'],
+        colors: ['Mixed Color'],
         material: 'Mesh and rubber',
         year: '2023'
       },
@@ -566,11 +535,9 @@ const ProductDetail = {
         description: 'Travis Scott Black Phantom collaboration. All-black colorway with signature reverse swoosh and hidden details.',
         images: [
           'images/blackphantom.png',
-          'images/phantom-side.png',
-          'images/phantom-bottom.png'
         ],
         sizes: ['36', '37', '38', '39', '40', '41', '42', '43', '44'],
-        colors: ['#000000'],
+        colors: ['Black'],
         material: 'Leather and suede',
         year: '2022'
       },
@@ -581,11 +548,9 @@ const ProductDetail = {
         description: 'New Balance 530 sneakers in grey colorway. Retro running silhouette with modern comfort.',
         images: [
           'images/newbalance530grey.png',
-          'images/nb530-side.png',
-          'images/nb530-bottom.png'
         ],
         sizes: ['36', '37', '38', '39', '40', '41', '42', '43', '44'],
-        colors: ['#808080'],
+        colors: ['Grey'],
         material: 'Mesh and suede',
         year: '2023'
       },
@@ -596,11 +561,9 @@ const ProductDetail = {
         description: 'Adidas Runfalcon 5 running shoes with responsive cushioning. Lightweight and comfortable for daily wear.',
         images: [
           'images/Runfalcon_5_Running_Shoes_Black_IE8826_01_standard.png',
-          'images/runfalcon-side.png',
-          'images/runfalcon-bottom.png'
         ],
         sizes: ['36', '37', '38', '39', '40', '41', '42', '43', '44'],
-        colors: ['#000000', '#FFFFFF'],
+        colors: ['Mixed Color'],
         material: 'Mesh and rubber',
         year: '2023'
       },
@@ -611,11 +574,9 @@ const ProductDetail = {
         description: 'Travis Scott Reverse Mocha collaboration. Brown and white colorway with signature reverse swoosh.',
         images: [
           'images/reversemocha.png',
-          'images/mocha-side.png',
-          'images/mocha-bottom.png'
         ],
         sizes: ['36', '37', '38', '39', '40', '41', '42', '43', '44'],
-        colors: ['#8B5A3C', '#FFFFFF'],
+        colors: ['Brown', 'White'],
         material: 'Suede and leather',
         year: '2022'
       },
@@ -626,11 +587,9 @@ const ProductDetail = {
         description: 'New Balance 550 basketball-inspired sneakers in green colorway. Classic design with premium materials.',
         images: [
           'images/newbalance550green.png',
-          'images/nb550-side.png',
-          'images/nb550-bottom.png'
         ],
         sizes: ['36', '37', '38', '39', '40', '41', '42', '43', '44'],
-        colors: ['#006400', '#FFFFFF'],
+        colors: ['Green'],
         material: 'Leather and rubber',
         year: '2022'
       },
@@ -641,11 +600,9 @@ const ProductDetail = {
         description: 'New Balance 530 in white, silver and navy colorway. Retro runner with modern comfort technology.',
         images: [
           'images/newbalance530white.png',
-          'images/nb530white-side.png',
-          'images/nb530white-bottom.png'
         ],
         sizes: ['36', '37', '38', '39', '40', '41', '42', '43', '44'],
-        colors: ['#FFFFFF', '#000080'],
+        colors: ['White'],
         material: 'Mesh and suede',
         year: '2023'
       },
@@ -658,11 +615,9 @@ const ProductDetail = {
         description: 'Vintage washed New York cap with distressed look. Adjustable strap for perfect fit.',
         images: [
           'images/newyorkcapwash.png',
-          'images/newyorkcap-side.png',
-          'images/newyorkcap-back.png'
         ],
         sizes: ['One Size'],
-        colors: ['#808080'],
+        colors: ['Washed Grey'],
         material: '100% Cotton',
         year: '1990s'
       },
@@ -673,11 +628,9 @@ const ProductDetail = {
         description: 'Classic British-style hat in brown. Perfect for adding a sophisticated touch to any outfit.',
         images: [
           'images/britishhat.png',
-          'images/britishhat-side.png',
-          'images/britishhat-detail.png'
         ],
         sizes: ['One Size'],
-        colors: ['#8B4513'],
+        colors: ['Brown'],
         material: 'Wool blend',
         year: 'Vintage'
       },
@@ -688,11 +641,9 @@ const ProductDetail = {
         description: 'Vintage-inspired trucker cap with "New Chapter" embroidery. Mesh back for breathability.',
         images: [
           'images/Newchaptertruckerhat.png',
-          'images/trucker-side.png',
-          'images/trucker-back.png'
         ],
         sizes: ['One Size'],
-        colors: ['#8B4513', '#556B2F'],
+        colors: ['Brown', 'Olive'],
         material: 'Cotton and mesh',
         year: 'Vintage'
       },
@@ -703,11 +654,9 @@ const ProductDetail = {
         description: 'Classic brown leather belt with simple buckle. Versatile accessory for pants or jeans.',
         images: [
           'images/belt.png',
-          'images/belt-detail.png',
-          'images/belt-buckle.png'
         ],
         sizes: ['S', 'M', 'L'],
-        colors: ['#8B4513'],
+        colors: ['Brown'],
         material: 'Genuine leather',
         year: 'Vintage'
       },
@@ -718,11 +667,9 @@ const ProductDetail = {
         description: 'Rare 90s Colorado vintage cap in cream and black colorway. Features embroidered team logo.',
         images: [
           'images/Colorado90svintage.png',
-          'images/colorado-side.png',
-          'images/colorado-back.png'
         ],
         sizes: ['One Size'],
-        colors: ['#F5F5DC', '#000000'],
+        colors: ['Cream', 'Black'],
         material: 'Cotton',
         year: '1990s'
       },
@@ -733,11 +680,9 @@ const ProductDetail = {
         description: 'Classic black leather belt with simple buckle. Essential wardrobe accessory.',
         images: [
           'images/blackbelt.png',
-          'images/blackbelt-detail.png',
-          'images/blackbelt-buckle.png'
         ],
         sizes: ['S', 'M', 'L'],
-        colors: ['#000000'],
+        colors: ['Black'],
         material: 'Genuine leather',
         year: 'Vintage'
       },
@@ -748,11 +693,9 @@ const ProductDetail = {
         description: 'Vintage-style black watch with leather strap. Minimalist design with analog display.',
         images: [
           'images/watch1.png',
-          'images/watch-side.png',
-          'images/watch-back.png'
         ],
         sizes: ['One Size'],
-        colors: ['#000000'],
+        colors: ['Black'],
         material: 'Stainless steel and leather',
         year: 'Vintage'
       },
@@ -763,11 +706,9 @@ const ProductDetail = {
         description: 'Classic black bucket hat. Provides sun protection while adding style to your look.',
         images: [
           'images/buckethat.png',
-          'images/bucket-side.png',
-          'images/bucket-detail.png'
         ],
         sizes: ['One Size'],
-        colors: ['#000000'],
+        colors: ['Black'],
         material: 'Cotton',
         year: 'Vintage'
       },
@@ -778,11 +719,9 @@ const ProductDetail = {
         description: 'Vintage Zim military watch with brown strap. Features luminous hands and military time markings.',
         images: [
           'images/watch2.png',
-          'images/zim-side.png',
-          'images/zim-back.png'
         ],
         sizes: ['One Size'],
-        colors: ['#8B4513'],
+        colors: ['Brown'],
         material: 'Stainless steel and leather',
         year: '1960s'
       },
@@ -793,11 +732,9 @@ const ProductDetail = {
         description: 'Simple silver cross necklace on chain. Classic religious jewelry piece.',
         images: [
           'images/crossnecklace.png',
-          'images/cross-detail.png',
-          'images/cross-back.png'
         ],
         sizes: ['One Size'],
-        colors: ['#C0C0C0'],
+        colors: ['Silver'],
         material: 'Stainless steel',
         year: 'New'
       },
@@ -808,11 +745,9 @@ const ProductDetail = {
         description: 'Black multi-strand bracelet with silver accents. Adjustable for perfect fit.',
         images: [
           'images/multistrandbracelet.png',
-          'images/bracelet-detail.png',
-          'images/bracelet-clasp.png'
         ],
         sizes: ['One Size'],
-        colors: ['#000000'],
+        colors: ['Black'],
         material: 'Fabric and metal',
         year: 'New'
       },
@@ -823,11 +758,9 @@ const ProductDetail = {
         description: 'Black bead necklace with silver accents. Adjustable length for versatile styling.',
         images: [
           'images/BeadNecklace.png',
-          'images/bead-detail.png',
-          'images/bead-clasp.png'
         ],
         sizes: ['One Size'],
-        colors: ['#000000'],
+        colors: ['Black'],
         material: 'Beads and metal',
         year: 'New'
       }
@@ -867,14 +800,24 @@ const ProductDetail = {
       }
 
       // Update color options
-      const colorOptions = document.querySelector('.color-options');
-      if (colorOptions) {
-        colorOptions.innerHTML = product.colors.map((color, index) => `
-          <button class="color-option ${index === 0 ? 'active' : ''}" 
-                  style="background-color: ${color}" 
-                  data-color="${color}"></button>
-        `).join('');
-      }
+   // In ProductDetail.loadProductData
+const colorOptions = document.querySelector('.color-options');
+if (colorOptions) {
+    // Remove any existing color text element
+    const existingColorText = colorOptions.parentNode.querySelector('.color-text');
+    if (existingColorText) existingColorText.remove();
+    
+    // Create new color text display
+    const colorText = document.createElement('p');
+    colorText.className = 'color-text';
+    colorText.textContent = product.colors.join(' and ');
+    
+    // Insert after the color options
+    colorOptions.parentNode.insertBefore(colorText, colorOptions.nextSibling);
+    
+    // Hide the color buttons if you don't want them
+    colorOptions.style.display = 'none';
+}
 
       // Update specs
       const specGroups = document.querySelectorAll('.spec-group');
@@ -937,9 +880,8 @@ const ProductDetail = {
     const sizeOption = productContainer.querySelector('.size-options .active');
     const size = sizeOption?.textContent;
     
-    const colorOption = productContainer.querySelector('.color-options .active');
-    const color = colorOption ? colorOption.getAttribute('data-color') || 
-                            colorOption.style.backgroundColor : null;
+     const colorTextElement = document.querySelector('.color-text');
+    const colorText = colorTextElement ? colorTextElement.textContent : '';
     
     // Get quantity - IMPORTANT FIX
     const quantityInput = document.querySelector('.quantity-input');
@@ -961,14 +903,14 @@ const ProductDetail = {
     }
     
     CartManager.addToCart({
-      id: productId,
-      name: productName,
-      price: price,
-      image: image,
-      size: size,
-      color: color,
-      condition: condition,
-      quantity: quantity 
+        id: productId,
+        name: productName,
+        price: price,
+        image: image,
+        size: size,
+        color: colorText,
+        condition: condition,
+        quantity: quantity 
     });
   }
 };
@@ -1036,17 +978,23 @@ const App = {
       CartManager.renderCart();
 
       document.querySelector('.checkout-btn')?.addEventListener('click', () => {
-        if (cart.length === 0) {
-          alert('Your cart is empty!');
-          return;
-        }
-        alert('Proceeding to checkout!');
-
-        // Clear all items in the cart
-        cart = []; 
-        CartManager.saveCart(); 
-        CartManager.updateCartCount(); 
-        CartManager.renderCart(); 
+          if (cart.length === 0) {
+              alert('Your cart is empty!');
+              return;
+          }
+          
+          // Calculate subtotal
+          const subtotal = cart.reduce((total, item) => {
+              const price = parseFloat(item.price.replace(/[^0-9.-]+/g,""));
+              return total + (price * item.quantity);
+          }, 0);
+          
+          // Save the cart and subtotal to localStorage before navigating
+          localStorage.setItem('vintagecycle-cart', JSON.stringify(cart));
+          localStorage.setItem('checkout-subtotal', subtotal.toFixed(2));
+          
+          // Navigate to QR code payment page
+          window.location.href = 'Qrcode.html';
       });
     }
   }
